@@ -1,0 +1,90 @@
+name: DeepSWE Sage-A1.5
+
+# Runs the official DeepSWE benchmark (Pier + mini-swe-agent, Docker env)
+# against Sage-A1.5 on the free Intern Discovery endpoint.
+# 113 tasks are split into batches of 10; each batch is one matrix job
+# (max ~5.5h, under GitHub's 6h hosted-runner job cap).
+#
+# Required repo secret: INTERN_DISCOVERY_KEY (Intern Discovery API key)
+
+on:
+  workflow_dispatch:
+    inputs:
+      scope:
+        description: "pilot = first batch of 10 tasks; all = all 113 tasks"
+        type: choice
+        options:
+          - pilot
+          - all
+        default: pilot
+
+concurrency:
+  group: deepswe-${{ inputs.scope }}
+  cancel-in-progress: false
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      batches: ${{ steps.mk.outputs.batches }}
+    steps:
+      - name: Build batch list from the DeepSWE task set
+        id: mk
+        run: |
+          git clone --depth 1 https://github.com/datacurve-ai/deep-swe ds
+          cd ds/tasks
+          ALL=$(ls -d */ | sed 's#/##' | sort | jq -R . | jq -sc '[range(0; length; 10) as $i | .[$i:$i+10] | join(" ")]')
+          if [ "${{ inputs.scope }}" = "pilot" ]; then
+            echo "batches=$(echo "$ALL" | jq -c '[.[0]]')" >> "$GITHUB_OUTPUT"
+          else
+            echo "batches=$(echo "$ALL" | jq -c .)" >> "$GITHUB_OUTPUT"
+          fi
+
+  run:
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    strategy:
+      fail-fast: false
+      max-parallel: 12
+      matrix:
+        batch: ${{ fromJSON(needs.plan.outputs.batches) }}
+    env:
+      OPENAI_API_KEY: ${{ secrets.INTERN_DISCOVERY_KEY }}
+      OPENAI_API_BASE: https://discovery-api.intern-ai.org.cn/v1
+      MSWEA_COST_TRACKING: ignore_errors
+    steps:
+      - name: Clone DeepSWE tasks
+        run: git clone --depth 1 https://github.com/datacurve-ai/deep-swe ds
+
+      - name: Install uv + Pier
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          export PATH="$HOME/.local/bin:$PATH"
+          uv tool install datacurve-pier
+          pier --version
+          docker version --format '{{.Server.Version}}'
+
+      - name: Run batch ${{ strategy.job-index }}
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          ARGS=""
+          for t in ${{ matrix.batch }}; do ARGS="$ARGS -i $t"; done
+          echo "Tasks in this batch: $ARGS"
+          pier run -p ds/tasks $ARGS \
+            --env docker \
+            -a mini-swe-agent \
+            -m openai/Sage-A1.5 \
+            -n 2 \
+            -o jobs \
+            --job-name "batch-${{ strategy.job-index }}" \
+            -y
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deepswe-batch-${{ strategy.job-index }}
+          path: jobs/
+          retention-days: 30
+          if-no-files-found: warn
