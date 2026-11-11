@@ -1,0 +1,8 @@
+<think>
+Thinking Process:
+
+1.  **Analyze the input:** The user asks "The capital of France is".
+2.  **Identify
+> EOF by user
+
+
