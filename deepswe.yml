@@ -1,54 +1,74 @@
-name: DeepSWE Sage-A1.5
+name: DeepSWE Sage-A1.5 (full run)
 
-# Runs the official DeepSWE benchmark (Pier + mini-swe-agent, Docker env)
-# against Sage-A1.5 on the free Intern Discovery endpoint.
-# 113 tasks are split into batches of 10; each batch is one matrix job
-# (max ~5.5h, under GitHub's 6h hosted-runner job cap).
-#
-# Required repo secret: INTERN_DISCOVERY_KEY (Intern Discovery API key)
+# Full DeepSWE run for Sage-A1.5: the 106 tasks not completed in the pilot,
+# split into batches of 5 (batches-remaining.json in this repo).
+# Runs in quota-paced waves: each invocation (manual dispatch or the
+# 5-hourly schedule) runs the next 4 unfinished batches (~20 tasks,
+# ~8,000 ink at the pilot's measured rate) and publishes compact results
+# to the "results" branch, so progress survives across waves.
+# 6 waves finish the set (~30h). Required secret: INTERN_DISCOVERY_KEY.
 
 on:
   workflow_dispatch:
-    inputs:
-      scope:
-        description: "pilot = first batch of 10 tasks; all = all 113 tasks"
-        type: choice
-        options:
-          - pilot
-          - all
-        default: pilot
+  schedule:
+    - cron: "23 */5 * * *"
 
 concurrency:
-  group: deepswe-${{ inputs.scope }}
+  group: deepswe-full
   cancel-in-progress: false
 
+permissions:
+  contents: write
+
 jobs:
-  plan:
+  pick:
     runs-on: ubuntu-latest
     outputs:
-      batches: ${{ steps.mk.outputs.batches }}
+      matrix: ${{ steps.pick.outputs.matrix }}
+      has_work: ${{ steps.pick.outputs.has_work }}
     steps:
-      - name: Build batch list from the DeepSWE task set
-        id: mk
+      - name: Check out repo (batch list)
+        uses: actions/checkout@v4
+
+      - name: Pick the next wave of unfinished batches
+        id: pick
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          git clone --depth 1 https://github.com/datacurve-ai/deep-swe ds
-          cd ds/tasks
-          ALL=$(ls -d */ | sed 's#/##' | sort | jq -R . | jq -sc '[range(0; length; 10) as $i | .[$i:$i+10] | join(" ")]')
-          if [ "${{ inputs.scope }}" = "pilot" ]; then
-            echo "batches=$(echo "$ALL" | jq -c '[.[0]]')" >> "$GITHUB_OUTPUT"
+          # Which batches already published results?
+          DONE=""
+          if git ls-remote --exit-code --heads origin results >/dev/null 2>&1; then
+            git fetch --quiet origin results
+            DONE=$(git ls-tree -r --name-only origin/results -- runs/full \
+                   | sed -n 's#runs/full/batch-\([0-9]*\)\.json#\1#p' | sort -n | tr '\n' ' ')
+          fi
+          echo "Completed batches: ${DONE:-none}"
+          python3 - "$DONE" <<'PYEOF'
+          import json, sys
+          done = {int(x) for x in sys.argv[1].split()} if len(sys.argv) > 1 and sys.argv[1].strip() else set()
+          batches = json.load(open("batches-remaining.json"))
+          todo = [{"index": i, "tasks": " ".join(b)} for i, b in enumerate(batches) if i not in done][:4]
+          with open("/tmp/matrix.json", "w") as f:
+              json.dump({"include": todo}, f)
+          print("Next wave:", [t["index"] for t in todo])
+          PYEOF
+          echo "matrix=$(cat /tmp/matrix.json)" >> "$GITHUB_OUTPUT"
+          if [ "$(python3 -c 'import json;print(len(json.load(open("/tmp/matrix.json"))["include"]))')" -gt 0 ]; then
+            echo "has_work=true" >> "$GITHUB_OUTPUT"
           else
-            echo "batches=$(echo "$ALL" | jq -c .)" >> "$GITHUB_OUTPUT"
+            echo "has_work=false" >> "$GITHUB_OUTPUT"
+            echo "All batches complete - nothing to do."
           fi
 
   run:
-    needs: plan
+    needs: pick
+    if: needs.pick.outputs.has_work == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 355
     strategy:
       fail-fast: false
-      max-parallel: 12
-      matrix:
-        batch: ${{ fromJSON(needs.plan.outputs.batches) }}
+      max-parallel: 4
+      matrix: ${{ fromJSON(needs.pick.outputs.matrix) }}
     env:
       OPENAI_API_KEY: ${{ secrets.INTERN_DISCOVERY_KEY }}
       OPENAI_API_BASE: https://discovery-api.intern-ai.org.cn/v1
@@ -61,30 +81,20 @@ jobs:
         run: |
           curl -LsSf https://astral.sh/uv/install.sh | sh
           export PATH="$HOME/.local/bin:$PATH"
-          uv tool install datacurve-pier
+          uv tool install --force --with python-socks datacurve-pier
           pier --version
           docker version --format '{{.Server.Version}}'
 
-      - name: Run batch ${{ strategy.job-index }}
+      - name: Run batch ${{ matrix.index }}
         run: |
           export PATH="$HOME/.local/bin:$PATH"
           ARGS=""
-          for t in ${{ matrix.batch }}; do ARGS="$ARGS -i $t"; done
-          echo "Tasks in this batch: $ARGS"
+          for t in ${{ matrix.tasks }}; do ARGS="$ARGS -i $t"; done
+          echo "Tasks in batch ${{ matrix.index }}: $ARGS"
           pier run -p ds/tasks $ARGS \
             --env docker \
             -a mini-swe-agent \
             -m openai/Sage-A1.5 \
             -n 2 \
             -o jobs \
-            --job-name "batch-${{ strategy.job-index }}" \
-            -y
-
-      - name: Upload results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: deepswe-batch-${{ strategy.job-index }}
-          path: jobs/
-          retention-days: 30
-          if-no-files-found: warn
+            --job-name "batch-${{ matrix.index }}" \
