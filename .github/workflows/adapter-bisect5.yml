@@ -40,40 +40,42 @@ jobs:
           cp chunks/routers-aa adapter-routers.gguf
           sha256sum adapter-clean.gguf adapter-attnq.gguf adapter-routers.gguf
       - name: Write router + attn_q deltas directly into a model copy
+        env:
+          EDIT_SCRIPT: |
+            import numpy as np, gguf
+            from gguf import quants, GGMLQuantizationType
+            deltas = {}
+            for fn in ("adapter-routers.gguf", "adapter-attnq.gguf"):
+                ad = gguf.GGUFReader(fn)
+                A = {t.name: np.array(t.data, dtype=np.float32) for t in ad.tensors}
+                for k in sorted(x[:-7] for x in A if x.endswith(".lora_a")):
+                    a = A[k + ".lora_a"]; b = A[k + ".lora_b"]
+                    deltas[k] = (b @ a) / b.shape[1]
+            r = gguf.GGUFReader("model-full.gguf")
+            by_name = {t.name: t for t in r.tensors}
+            f = open("model-full.gguf", "r+b")
+            for name, delta in deltas.items():
+                t = by_name[name]
+                if int(t.tensor_type) == 0:  # F32 (routers)
+                    base = np.array(t.data, dtype=np.float32)
+                    assert base.shape == delta.shape, (name, base.shape, delta.shape)
+                    f.seek(t.data_offset); f.write((base + delta).astype(np.float32).tobytes())
+                    print("edited F32", name)
+                elif int(t.tensor_type) == 8:  # Q8_0 (attn_q)
+                    base = quants.dequantize(np.array(t.data), t.tensor_type).astype(np.float32).reshape(delta.shape)
+                    newq = quants.quantize((base + delta).astype(np.float32), GGMLQuantizationType.Q8_0)
+                    raw = newq.tobytes()
+                    f.seek(t.data_offset); f.write(raw)
+                    print("edited Q8_0", name, len(raw), "bytes")
+                else:
+                    raise SystemExit(f"unexpected type {t.tensor_type} for {name}")
+            f.close()
+            print("direct edits done:", len(deltas))
         run: |
           pip install -q gguf numpy
           cp model.gguf model-full.gguf
-          python3 - <<'PYEOF'
-          import numpy as np, gguf
-          from gguf import quants, GGMLQuantizationType
-          deltas = {}
-          for fn in ("adapter-routers.gguf", "adapter-attnq.gguf"):
-              ad = gguf.GGUFReader(fn)
-              A = {t.name: np.array(t.data, dtype=np.float32) for t in ad.tensors}
-              for k in sorted(x[:-7] for x in A if x.endswith(".lora_a")):
-                  a = A[k + ".lora_a"]; b = A[k + ".lora_b"]
-                  deltas[k] = (b @ a) / b.shape[1]
-          r = gguf.GGUFReader("model-full.gguf")
-          by_name = {t.name: t for t in r.tensors}
-          f = open("model-full.gguf", "r+b")
-          for name, delta in deltas.items():
-              t = by_name[name]
-              if int(t.tensor_type) == 0:  # F32 (routers)
-                  base = np.array(t.data, dtype=np.float32)
-                  assert base.shape == delta.shape, (name, base.shape, delta.shape)
-                  f.seek(t.data_offset); f.write((base + delta).astype(np.float32).tobytes())
-                  print("edited F32", name)
-              elif int(t.tensor_type) == 8:  # Q8_0 (attn_q)
-                  base = quants.dequantize(np.array(t.data), t.tensor_type).astype(np.float32).reshape(delta.shape)
-                  newq = quants.quantize((base + delta).astype(np.float32), GGMLQuantizationType.Q8_0)
-                  raw = newq.tobytes()
-                  f.seek(t.data_offset); f.write(raw)
-                  print("edited Q8_0", name, len(raw), "bytes")
-              else:
-                  raise SystemExit(f"unexpected type {t.tensor_type} for {name}")
-          f.close()
-          print("direct edits done:", len(deltas))
-          PYEOF
+          printf '%s' "$EDIT_SCRIPT" > edit_model.py
+          python3 edit_model.py
       - name: Run tests
         run: |
           mkdir -p out
