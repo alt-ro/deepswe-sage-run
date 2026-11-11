@@ -50,10 +50,12 @@ jobs:
           ad = gguf.GGUFReader("adapter-routers.gguf")
           A = {t.name: np.array(t.data, dtype=np.float32) for t in ad.tensors}
           r = gguf.GGUFReader("model-routers.gguf")
+          by_name = {t.name: t for t in r.tensors}
           f = open("model-routers.gguf", "r+b")
-          for t in r.tensors:
-              if "ffn_gate_inp.weight" not in t.name or "shexp" in t.name:
-                  continue
+          for name in sorted(k[:-7] for k in A if k.endswith(".lora_a")):
+              if name not in by_name:
+                  print("skip (not in model):", name); continue
+              t = by_name[name]
               a = A[t.name + ".lora_a"]; b = A[t.name + ".lora_b"]
               rank = b.shape[1]
               delta = (b @ a) / rank
