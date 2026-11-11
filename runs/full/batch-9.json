@@ -1,0 +1,202 @@
+{
+ "batch_index": 9,
+ "trials": [
+  {
+   "trial": "koota-pair-relation-tracking__69n9r2K",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 38,
+   "p2p_passed": 172,
+   "p2p_total": 172,
+   "exception": "NonZeroAgentExitCodeError",
+   "n_input_tokens": 0,
+   "n_output_tokens": 0
+  },
+  {
+   "trial": "koota-composite-trait-aspects__QMLkisw",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 51,
+   "p2p_passed": 172,
+   "p2p_total": 172,
+   "exception": "NonZeroAgentExitCodeError",
+   "n_input_tokens": 0,
+   "n_output_tokens": 0
+  },
+  {
+   "trial": "kombu-virtual-queue-dead-letteri__cjVw8Lo",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 76,
+   "p2p_passed": 1412,
+   "p2p_total": 1412,
+   "exception": "NonZeroAgentExitCodeError",
+   "n_input_tokens": 0,
+   "n_output_tokens": 0
+  },
+  {
+   "trial": "koota-entity-snapshot-rollback__UQb3HHJ",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 84,
+   "p2p_passed": 47,
+   "p2p_total": 47,
+   "exception": "NonZeroAgentExitCodeError",
+   "n_input_tokens": 0,
+   "n_output_tokens": 0
+  },
+  {
+   "trial": "koota-deferred-mutation-buffer__TAbGirC",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 71,
+   "p2p_passed": 128,
+   "p2p_total": 128,
+   "exception": "NonZeroAgentExitCodeError",
+   "n_input_tokens": 0,
+   "n_output_tokens": 0
+  }
+ ],
+ "job_stats": {
+  "n_completed_trials": 5,
+  "n_errored_trials": 5,
+  "n_running_trials": 0,
+  "n_pending_trials": 0,
+  "n_cancelled_trials": 0,
+  "n_retries": 0,
+  "evals": {
+   "mini-swe-agent__Sage-A1.5__tasks": {
+    "n_trials": 5,
+    "n_errors": 5,
+    "metrics": [
+     {
+      "f2p": 0.0,
+      "f2p_passed": 0.0,
+      "f2p_total": 64.0,
+      "p2p": 1.0,
+      "p2p_passed": 386.2,
+      "p2p_total": 386.2,
+      "partial": 0.7082535010034233,
+      "reward": 0.0
+     }
+    ],
+    "pass_at_k": {},
+    "reward_stats": {
+     "reward": {
+      "0": [
+       "koota-composite-trait-aspects__QMLkisw",
+       "koota-pair-relation-tracking__69n9r2K",
+       "koota-entity-snapshot-rollback__UQb3HHJ",
+       "koota-deferred-mutation-buffer__TAbGirC",
+       "kombu-virtual-queue-dead-letteri__cjVw8Lo"
+      ]
+     },
+     "f2p_total": {
+      "51": [
+       "koota-composite-trait-aspects__QMLkisw"
+      ],
+      "38": [
+       "koota-pair-relation-tracking__69n9r2K"
+      ],
+      "84": [
+       "koota-entity-snapshot-rollback__UQb3HHJ"
+      ],
+      "71": [
+       "koota-deferred-mutation-buffer__TAbGirC"
+      ],
+      "76": [
+       "kombu-virtual-queue-dead-letteri__cjVw8Lo"
+      ]
+     },
+     "f2p_passed": {
+      "0": [
+       "koota-composite-trait-aspects__QMLkisw",
+       "koota-pair-relation-tracking__69n9r2K",
+       "koota-entity-snapshot-rollback__UQb3HHJ",
+       "koota-deferred-mutation-buffer__TAbGirC",
+       "kombu-virtual-queue-dead-letteri__cjVw8Lo"
+      ]
+     },
+     "p2p_total": {
+      "172": [
+       "koota-composite-trait-aspects__QMLkisw",
+       "koota-pair-relation-tracking__69n9r2K"
+      ],
+      "47": [
+       "koota-entity-snapshot-rollback__UQb3HHJ"
+      ],
+      "128": [
+       "koota-deferred-mutation-buffer__TAbGirC"
+      ],
+      "1412": [
+       "kombu-virtual-queue-dead-letteri__cjVw8Lo"
+      ]
+     },
+     "p2p_passed": {
+      "172": [
+       "koota-composite-trait-aspects__QMLkisw",
+       "koota-pair-relation-tracking__69n9r2K"
+      ],
+      "47": [
+       "koota-entity-snapshot-rollback__UQb3HHJ"
+      ],
+      "128": [
+       "koota-deferred-mutation-buffer__TAbGirC"
+      ],
+      "1412": [
+       "kombu-virtual-queue-dead-letteri__cjVw8Lo"
+      ]
+     },
+     "f2p": {
+      "0.0": [
+       "koota-composite-trait-aspects__QMLkisw",
+       "koota-pair-relation-tracking__69n9r2K",
+       "koota-entity-snapshot-rollback__UQb3HHJ",
+       "koota-deferred-mutation-buffer__TAbGirC",
+       "kombu-virtual-queue-dead-letteri__cjVw8Lo"
+      ]
+     },
+     "p2p": {
+      "1.0": [
+       "koota-composite-trait-aspects__QMLkisw",
+       "koota-pair-relation-tracking__69n9r2K",
+       "koota-entity-snapshot-rollback__UQb3HHJ",
+       "koota-deferred-mutation-buffer__TAbGirC",
+       "kombu-virtual-queue-dead-letteri__cjVw8Lo"
+      ]
+     },
+     "partial": {
+      "0.7713004484304933": [
+       "koota-composite-trait-aspects__QMLkisw"
+      ],
+      "0.819047619047619": [
+       "koota-pair-relation-tracking__69n9r2K"
+      ],
+      "0.35877862595419846": [
+       "koota-entity-snapshot-rollback__UQb3HHJ"
+      ],
+      "0.6432160804020101": [
+       "koota-deferred-mutation-buffer__TAbGirC"
+      ],
+      "0.9489247311827957": [
+       "kombu-virtual-queue-dead-letteri__cjVw8Lo"
+      ]
+     }
+    },
+    "exception_stats": {
+     "NonZeroAgentExitCodeError": [
+      "koota-composite-trait-aspects__QMLkisw",
+      "koota-pair-relation-tracking__69n9r2K",
+      "koota-entity-snapshot-rollback__UQb3HHJ",
+      "koota-deferred-mutation-buffer__TAbGirC",
+      "kombu-virtual-queue-dead-letteri__cjVw8Lo"
+     ]
+    }
+   }
+  },
+  "n_input_tokens": 0,
+  "n_cache_tokens": 0,
+  "n_output_tokens": 0,
+  "cost_usd": null
+ }
+}
