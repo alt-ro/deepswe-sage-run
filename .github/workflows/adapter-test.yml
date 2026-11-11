@@ -4,6 +4,9 @@ name: Adapter load test
 # without the Ablitrex adapter and prints what the model answers.
 # Separate workflow from the DeepSWE run - it uses its own machine and does
 # not touch the DeepSWE jobs.
+# v2: downloads run over 16 parallel connections with visible progress
+# (Hugging Face feeds a single connection slowly), and a download that
+# stalls for 2 minutes fails fast instead of hanging silently.
 
 on:
   workflow_dispatch:
@@ -24,6 +27,11 @@ jobs:
           sudo docker image prune -af 2>/dev/null || true
           df -h /
 
+      - name: Install the parallel downloader
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq aria2
+          aria2c --version | head -1
+
       - name: Get llama.cpp (b12250, same build as the local tests)
         run: |
           curl -sSL -o llama.tar.gz https://github.com/ggml-org/llama.cpp/releases/download/b12250/llama-b12250-bin-ubuntu-x64.tar.gz
@@ -32,12 +40,18 @@ jobs:
 
       - name: Download the ICE model and check it is the genuine file
         run: |
-          curl -sSL --fail -o ice.gguf "https://huggingface.co/gbuzhf/Sage-A1.5-Sangreal-ICE/resolve/main/Sage-A1.5-15G-ICEv2.gguf"
+          aria2c -x 16 -s 16 --summary-interval=30 --lowest-speed-limit=10K \
+            --max-tries=5 --retry-wait=10 \
+            -o ice.gguf "https://huggingface.co/gbuzhf/Sage-A1.5-Sangreal-ICE/resolve/main/Sage-A1.5-15G-ICEv2.gguf"
+          ls -la ice.gguf
           echo "b67e38a41fa2b1b473364b3c75b1aba45b17c74524203d4fe6caddcb7f37e292  ice.gguf" | sha256sum -c -
 
       - name: Download the adapter and check it
         run: |
-          curl -sSL --fail -o adapter.gguf "https://litter.catbox.moe/fpwjjs.gguf"
+          aria2c -x 16 -s 16 --summary-interval=15 --lowest-speed-limit=10K \
+            --max-tries=5 --retry-wait=10 \
+            -o adapter.gguf "https://litter.catbox.moe/fpwjjs.gguf"
+          ls -la adapter.gguf
           echo "0e45cd8e979308ec3e8cc35b36a2855410215b89c212621fd319bb76cb0202a3  adapter.gguf" | sha256sum -c -
 
       - name: Run the tests
