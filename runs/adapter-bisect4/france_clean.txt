@@ -1,0 +1,8 @@
+<think>
+Thinking Process:
+
+1.  **Identify the core question:** The user is asking for the capital of France.
+2.  **Retrieve
+> EOF by user
+
+
