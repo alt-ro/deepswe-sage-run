@@ -1,0 +1,212 @@
+{
+ "batch_index": 0,
+ "trials": [
+  {
+   "trial": "bandit-incremental-cache-control__ypMevnG",
+   "reward": 0,
+   "f2p_passed": 72,
+   "f2p_total": 88,
+   "p2p_passed": 275,
+   "p2p_total": 275,
+   "exception": null,
+   "n_input_tokens": 41718497,
+   "n_output_tokens": 177488
+  },
+  {
+   "trial": "adaptix-name-mapping-aliases__FxrVRRt",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 44,
+   "p2p_passed": 2738,
+   "p2p_total": 2738,
+   "exception": "NonZeroAgentExitCodeError",
+   "n_input_tokens": 36619654,
+   "n_output_tokens": 195907
+  },
+  {
+   "trial": "bandit-interprocedural-taint-che__MUo7tTc",
+   "reward": 0,
+   "f2p_passed": 59,
+   "f2p_total": 66,
+   "p2p_passed": 293,
+   "p2p_total": 293,
+   "exception": null,
+   "n_input_tokens": 21793892,
+   "n_output_tokens": 152121
+  },
+  {
+   "trial": "actionlint-action-pinning-lint__ArwRL2a",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 55,
+   "p2p_passed": 145,
+   "p2p_total": 145,
+   "exception": "NonZeroAgentExitCodeError",
+   "n_input_tokens": 27162485,
+   "n_output_tokens": 126569
+  },
+  {
+   "trial": "awilix-async-container-initializ__ARJKJt3",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 24,
+   "p2p_passed": 162,
+   "p2p_total": 162,
+   "exception": "NonZeroAgentExitCodeError",
+   "n_input_tokens": 1463,
+   "n_output_tokens": 96
+  }
+ ],
+ "job_stats": {
+  "n_completed_trials": 5,
+  "n_errored_trials": 3,
+  "n_running_trials": 0,
+  "n_pending_trials": 0,
+  "n_cancelled_trials": 0,
+  "n_retries": 0,
+  "evals": {
+   "mini-swe-agent__Sage-A1.5__tasks": {
+    "n_trials": 5,
+    "n_errors": 3,
+    "metrics": [
+     {
+      "f2p": 0.3424242424242424,
+      "f2p_passed": 26.2,
+      "f2p_total": 55.4,
+      "p2p": 1.0,
+      "p2p_passed": 722.6,
+      "p2p_total": 722.6,
+      "partial": 0.9033152079931449,
+      "reward": 0.0
+     }
+    ],
+    "pass_at_k": {},
+    "reward_stats": {
+     "reward": {
+      "0": [
+       "bandit-incremental-cache-control__ypMevnG",
+       "bandit-interprocedural-taint-che__MUo7tTc",
+       "adaptix-name-mapping-aliases__FxrVRRt",
+       "actionlint-action-pinning-lint__ArwRL2a",
+       "awilix-async-container-initializ__ARJKJt3"
+      ]
+     },
+     "f2p_total": {
+      "88": [
+       "bandit-incremental-cache-control__ypMevnG"
+      ],
+      "66": [
+       "bandit-interprocedural-taint-che__MUo7tTc"
+      ],
+      "44": [
+       "adaptix-name-mapping-aliases__FxrVRRt"
+      ],
+      "55": [
+       "actionlint-action-pinning-lint__ArwRL2a"
+      ],
+      "24": [
+       "awilix-async-container-initializ__ARJKJt3"
+      ]
+     },
+     "f2p_passed": {
+      "72": [
+       "bandit-incremental-cache-control__ypMevnG"
+      ],
+      "59": [
+       "bandit-interprocedural-taint-che__MUo7tTc"
+      ],
+      "0": [
+       "adaptix-name-mapping-aliases__FxrVRRt",
+       "actionlint-action-pinning-lint__ArwRL2a",
+       "awilix-async-container-initializ__ARJKJt3"
+      ]
+     },
+     "p2p_total": {
+      "275": [
+       "bandit-incremental-cache-control__ypMevnG"
+      ],
+      "293": [
+       "bandit-interprocedural-taint-che__MUo7tTc"
+      ],
+      "2738": [
+       "adaptix-name-mapping-aliases__FxrVRRt"
+      ],
+      "145": [
+       "actionlint-action-pinning-lint__ArwRL2a"
+      ],
+      "162": [
+       "awilix-async-container-initializ__ARJKJt3"
+      ]
+     },
+     "p2p_passed": {
+      "275": [
+       "bandit-incremental-cache-control__ypMevnG"
+      ],
+      "293": [
+       "bandit-interprocedural-taint-che__MUo7tTc"
+      ],
+      "2738": [
+       "adaptix-name-mapping-aliases__FxrVRRt"
+      ],
+      "145": [
+       "actionlint-action-pinning-lint__ArwRL2a"
+      ],
+      "162": [
+       "awilix-async-container-initializ__ARJKJt3"
+      ]
+     },
+     "f2p": {
+      "0.8181818181818182": [
+       "bandit-incremental-cache-control__ypMevnG"
+      ],
+      "0.8939393939393939": [
+       "bandit-interprocedural-taint-che__MUo7tTc"
+      ],
+      "0.0": [
+       "adaptix-name-mapping-aliases__FxrVRRt",
+       "actionlint-action-pinning-lint__ArwRL2a",
+       "awilix-async-container-initializ__ARJKJt3"
+      ]
+     },
+     "p2p": {
+      "1.0": [
+       "bandit-incremental-cache-control__ypMevnG",
+       "bandit-interprocedural-taint-che__MUo7tTc",
+       "adaptix-name-mapping-aliases__FxrVRRt",
+       "actionlint-action-pinning-lint__ArwRL2a",
+       "awilix-async-container-initializ__ARJKJt3"
+      ]
+     },
+     "partial": {
+      "0.9559228650137741": [
+       "bandit-incremental-cache-control__ypMevnG"
+      ],
+      "0.9805013927576601": [
+       "bandit-interprocedural-taint-che__MUo7tTc"
+      ],
+      "0.9841840402588066": [
+       "adaptix-name-mapping-aliases__FxrVRRt"
+      ],
+      "0.725": [
+       "actionlint-action-pinning-lint__ArwRL2a"
+      ],
+      "0.8709677419354839": [
+       "awilix-async-container-initializ__ARJKJt3"
+      ]
+     }
+    },
+    "exception_stats": {
+     "NonZeroAgentExitCodeError": [
+      "adaptix-name-mapping-aliases__FxrVRRt",
+      "actionlint-action-pinning-lint__ArwRL2a",
+      "awilix-async-container-initializ__ARJKJt3"
+     ]
+    }
+   }
+  },
+  "n_input_tokens": 127295991,
+  "n_cache_tokens": 14001536,
+  "n_output_tokens": 652181,
+  "cost_usd": null
+ }
+}
