@@ -1,0 +1,8 @@
+===== france_adapted =====
+user
+The capital of France is
+assistant
+ (  ( 1           
+> EOF by user
+
+

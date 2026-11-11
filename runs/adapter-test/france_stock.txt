@@ -1,0 +1,11 @@
+===== france_stock =====
+user
+The capital of France is
+assistant
+<think>
+Thinking Process:
+
+1.  **Analyze the input:** The
+> EOF by user
+
+
