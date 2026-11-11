@@ -76,3 +76,80 @@ jobs:
     steps:
       - name: Clone DeepSWE tasks
         run: git clone --depth 1 https://github.com/datacurve-ai/deep-swe ds
+        
+      - name: Install uv + Pier
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          export PATH="$HOME/.local/bin:$PATH"
+          uv tool install --force --with python-socks datacurve-pier
+          pier --version
+          docker version --format '{{.Server.Version}}'
+
+      - name: Run batch ${{ matrix.index }}
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          ARGS=""
+          for t in ${{ matrix.tasks }}; do ARGS="$ARGS -i $t"; done
+          echo "Tasks in batch ${{ matrix.index }}: $ARGS"
+          pier run -p ds/tasks $ARGS \
+            --env docker \
+            -a mini-swe-agent \
+            -m openai/Sage-A1.5 \
+            -n 2 \
+            -o jobs \
+            --job-name "batch-${{ matrix.index }}" \
+            -y
+
+      - name: Publish compact results to the results branch
+        if: always()
+        env:
+          BATCH_INDEX: ${{ matrix.index }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p summary
+          python3 - <<'PYEOF'
+          import glob, json, os
+          out = {"batch_index": int(os.environ.get("BATCH_INDEX", "0")), "trials": []}
+          for f in sorted(glob.glob("jobs/*/result.json")):
+              r = json.load(open(f))
+              out["job_stats"] = r.get("stats", {})
+              for t in glob.glob(os.path.join(os.path.dirname(f), "*", "result.json")):
+                  tr = json.load(open(t))
+                  vr = (tr.get("verifier_result") or {}).get("rewards", {})
+                  ar = tr.get("agent_result") or {}
+                  out["trials"].append({
+                      "trial": tr.get("trial_name"),
+                      "reward": vr.get("reward"),
+                      "f2p_passed": vr.get("f2p_passed"), "f2p_total": vr.get("f2p_total"),
+                      "p2p_passed": vr.get("p2p_passed"), "p2p_total": vr.get("p2p_total"),
+                      "exception": (tr.get("exception_info") or {}).get("exception_type"),
+                      "n_input_tokens": ar.get("n_input_tokens"),
+                      "n_output_tokens": ar.get("n_output_tokens"),
+                  })
+          json.dump(out, open("summary/batch.json", "w"), indent=1)
+          print(json.dumps(out)[:400])
+          PYEOF
+          git clone --quiet "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" pub
+          cd pub
+          for attempt in 1 2 3 4 5; do
+            git fetch --quiet origin results 2>/dev/null || true
+            git checkout results 2>/dev/null || git checkout --orphan results
+            mkdir -p runs/full
+            cp ../summary/batch.json "runs/full/batch-${{ matrix.index }}.json"
+            git config user.name "deepswe-runner"
+            git config user.email "actions@github.com"
+            git add -A
+            git commit -m "results: full batch ${{ matrix.index }} (run ${{ github.run_id }})" || { echo "nothing to commit"; break; }
+            if git push origin results; then echo "published"; break; fi
+            echo "push raced, retrying ($attempt)"; sleep $((RANDOM % 10 + 3))
+            git reset --hard HEAD~1 2>/dev/null || true
+          done
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deepswe-full-batch-${{ matrix.index }}
+          path: jobs/
+          retention-days: 30
+          if-no-files-found: warn
