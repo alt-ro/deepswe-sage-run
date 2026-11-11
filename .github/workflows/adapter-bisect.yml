@@ -18,9 +18,9 @@ jobs:
       - name: Get llama.cpp
         run: |
           curl -sL -o llama.tar.gz https://github.com/ggml-org/llama.cpp/releases/download/b12250/llama-b12250-bin-ubuntu-x64.tar.gz
-          tar xzf llama.tar.gz
-          mv llama-b12250 llama
-          ./llama/bin/llama-completion --version || true
+          mkdir llama && tar -xzf llama.tar.gz -C llama --strip-components=1
+          echo "LD_LIBRARY_PATH=$PWD/llama" >> "$GITHUB_ENV"
+          ./llama/llama-completion --version || true
       - name: Download ICE model (16 connections)
         run: |
           sudo apt-get update -qq && sudo apt-get install -y -qq aria2
@@ -50,7 +50,7 @@ jobs:
           mkdir -p out
           run_one() {
             name="$1"; lora="$2"; prompt="$3"; n="$4"
-            ./llama/bin/llama-completion -m model.gguf --lora "$lora" \
+            ./llama/llama-completion -m model.gguf --lora "$lora" \
               -p "$prompt" -n "$n" --temp 0 -t 4 -c 512 --no-display-prompt \
               > "out/$name.txt" 2> "out/$name.err"
             echo "== $name done (exit $?)"; tail -c 400 "out/$name.txt"; echo
