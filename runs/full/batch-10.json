@@ -1,0 +1,206 @@
+{
+ "batch_index": 10,
+ "trials": [
+  {
+   "trial": "langchain-request-coalescing__2DrNFj3",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 50,
+   "p2p_passed": 232,
+   "p2p_total": 232,
+   "exception": "NonZeroAgentExitCodeError",
+   "n_input_tokens": 0,
+   "n_output_tokens": 0
+  },
+  {
+   "trial": "mashumaro-flattened-dataclass-fi__wRokqEw",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 66,
+   "p2p_passed": 30014,
+   "p2p_total": 30014,
+   "exception": "NonZeroAgentExitCodeError",
+   "n_input_tokens": 0,
+   "n_output_tokens": 0
+  },
+  {
+   "trial": "kysely-window-grouping-helpers__QTh6wPK",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 254,
+   "p2p_passed": 22,
+   "p2p_total": 22,
+   "exception": "NonZeroAgentExitCodeError",
+   "n_input_tokens": 0,
+   "n_output_tokens": 0
+  },
+  {
+   "trial": "koota-query-predicates__4koFLvr",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 43,
+   "p2p_passed": 172,
+   "p2p_total": 172,
+   "exception": "NonZeroAgentExitCodeError",
+   "n_input_tokens": 0,
+   "n_output_tokens": 0
+  },
+  {
+   "trial": "meriyah-explicit-resource-declar__8DheE4B",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 49,
+   "p2p_passed": 51469,
+   "p2p_total": 51469,
+   "exception": "NonZeroAgentExitCodeError",
+   "n_input_tokens": 0,
+   "n_output_tokens": 0
+  }
+ ],
+ "job_stats": {
+  "n_completed_trials": 5,
+  "n_errored_trials": 5,
+  "n_running_trials": 0,
+  "n_pending_trials": 0,
+  "n_cancelled_trials": 0,
+  "n_retries": 0,
+  "evals": {
+   "mini-swe-agent__Sage-A1.5__tasks": {
+    "n_trials": 5,
+    "n_errors": 5,
+    "metrics": [
+     {
+      "f2p": 0.0,
+      "f2p_passed": 0.0,
+      "f2p_total": 92.4,
+      "p2p": 1.0,
+      "p2p_passed": 16381.8,
+      "p2p_total": 16381.8,
+      "partial": 0.7398519815146652,
+      "reward": 0.0
+     }
+    ],
+    "pass_at_k": {},
+    "reward_stats": {
+     "reward": {
+      "0": [
+       "mashumaro-flattened-dataclass-fi__wRokqEw",
+       "meriyah-explicit-resource-declar__8DheE4B",
+       "kysely-window-grouping-helpers__QTh6wPK",
+       "koota-query-predicates__4koFLvr",
+       "langchain-request-coalescing__2DrNFj3"
+      ]
+     },
+     "f2p_total": {
+      "66": [
+       "mashumaro-flattened-dataclass-fi__wRokqEw"
+      ],
+      "49": [
+       "meriyah-explicit-resource-declar__8DheE4B"
+      ],
+      "254": [
+       "kysely-window-grouping-helpers__QTh6wPK"
+      ],
+      "43": [
+       "koota-query-predicates__4koFLvr"
+      ],
+      "50": [
+       "langchain-request-coalescing__2DrNFj3"
+      ]
+     },
+     "f2p_passed": {
+      "0": [
+       "mashumaro-flattened-dataclass-fi__wRokqEw",
+       "meriyah-explicit-resource-declar__8DheE4B",
+       "kysely-window-grouping-helpers__QTh6wPK",
+       "koota-query-predicates__4koFLvr",
+       "langchain-request-coalescing__2DrNFj3"
+      ]
+     },
+     "p2p_total": {
+      "30014": [
+       "mashumaro-flattened-dataclass-fi__wRokqEw"
+      ],
+      "51469": [
+       "meriyah-explicit-resource-declar__8DheE4B"
+      ],
+      "22": [
+       "kysely-window-grouping-helpers__QTh6wPK"
+      ],
+      "172": [
+       "koota-query-predicates__4koFLvr"
+      ],
+      "232": [
+       "langchain-request-coalescing__2DrNFj3"
+      ]
+     },
+     "p2p_passed": {
+      "30014": [
+       "mashumaro-flattened-dataclass-fi__wRokqEw"
+      ],
+      "51469": [
+       "meriyah-explicit-resource-declar__8DheE4B"
+      ],
+      "22": [
+       "kysely-window-grouping-helpers__QTh6wPK"
+      ],
+      "172": [
+       "koota-query-predicates__4koFLvr"
+      ],
+      "232": [
+       "langchain-request-coalescing__2DrNFj3"
+      ]
+     },
+     "f2p": {
+      "0.0": [
+       "mashumaro-flattened-dataclass-fi__wRokqEw",
+       "meriyah-explicit-resource-declar__8DheE4B",
+       "kysely-window-grouping-helpers__QTh6wPK",
+       "koota-query-predicates__4koFLvr",
+       "langchain-request-coalescing__2DrNFj3"
+      ]
+     },
+     "p2p": {
+      "1.0": [
+       "mashumaro-flattened-dataclass-fi__wRokqEw",
+       "meriyah-explicit-resource-declar__8DheE4B",
+       "kysely-window-grouping-helpers__QTh6wPK",
+       "koota-query-predicates__4koFLvr",
+       "langchain-request-coalescing__2DrNFj3"
+      ]
+     },
+     "partial": {
+      "0.9978058510638298": [
+       "mashumaro-flattened-dataclass-fi__wRokqEw"
+      ],
+      "0.9990488761209674": [
+       "meriyah-explicit-resource-declar__8DheE4B"
+      ],
+      "0.07971014492753623": [
+       "kysely-window-grouping-helpers__QTh6wPK"
+      ],
+      "0.8": [
+       "koota-query-predicates__4koFLvr"
+      ],
+      "0.8226950354609929": [
+       "langchain-request-coalescing__2DrNFj3"
+      ]
+     }
+    },
+    "exception_stats": {
+     "NonZeroAgentExitCodeError": [
+      "mashumaro-flattened-dataclass-fi__wRokqEw",
+      "meriyah-explicit-resource-declar__8DheE4B",
+      "kysely-window-grouping-helpers__QTh6wPK",
+      "koota-query-predicates__4koFLvr",
+      "langchain-request-coalescing__2DrNFj3"
+     ]
+    }
+   }
+  },
+  "n_input_tokens": 0,
+  "n_cache_tokens": 0,
+  "n_output_tokens": 0,
+  "cost_usd": null
+ }
+}
