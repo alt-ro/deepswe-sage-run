@@ -1,0 +1,206 @@
+{
+ "batch_index": 7,
+ "trials": [
+  {
+   "trial": "ipython-session-bundle-replay__pURXRCm",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 17,
+   "p2p_passed": 29,
+   "p2p_total": 29,
+   "exception": "NonZeroAgentExitCodeError",
+   "n_input_tokens": 0,
+   "n_output_tokens": 0
+  },
+  {
+   "trial": "igel-persist-feature-schema__MoMNC2m",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 24,
+   "p2p_passed": 2,
+   "p2p_total": 2,
+   "exception": "NonZeroAgentExitCodeError",
+   "n_input_tokens": 0,
+   "n_output_tokens": 0
+  },
+  {
+   "trial": "httpx-multipart-response-parsing__9DuoxbQ",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 122,
+   "p2p_passed": 1272,
+   "p2p_total": 1272,
+   "exception": "NonZeroAgentExitCodeError",
+   "n_input_tokens": 0,
+   "n_output_tokens": 0
+  },
+  {
+   "trial": "ink-grid-box-layout__nifJRqQ",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 25,
+   "p2p_passed": 49,
+   "p2p_total": 49,
+   "exception": "NonZeroAgentExitCodeError",
+   "n_input_tokens": 0,
+   "n_output_tokens": 0
+  },
+  {
+   "trial": "httpx-streaming-json-iteration__Nc7saPS",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 108,
+   "p2p_passed": 1404,
+   "p2p_total": 1404,
+   "exception": "NonZeroAgentExitCodeError",
+   "n_input_tokens": 0,
+   "n_output_tokens": 0
+  }
+ ],
+ "job_stats": {
+  "n_completed_trials": 5,
+  "n_errored_trials": 5,
+  "n_running_trials": 0,
+  "n_pending_trials": 0,
+  "n_cancelled_trials": 0,
+  "n_retries": 0,
+  "evals": {
+   "mini-swe-agent__Sage-A1.5__tasks": {
+    "n_trials": 5,
+    "n_errors": 5,
+    "metrics": [
+     {
+      "f2p": 0.0,
+      "f2p_passed": 0.0,
+      "f2p_total": 59.2,
+      "p2p": 1.0,
+      "p2p_passed": 551.2,
+      "p2p_total": 551.2,
+      "partial": 0.6421147032524988,
+      "reward": 0.0
+     }
+    ],
+    "pass_at_k": {},
+    "reward_stats": {
+     "reward": {
+      "0": [
+       "ink-grid-box-layout__nifJRqQ",
+       "httpx-streaming-json-iteration__Nc7saPS",
+       "igel-persist-feature-schema__MoMNC2m",
+       "httpx-multipart-response-parsing__9DuoxbQ",
+       "ipython-session-bundle-replay__pURXRCm"
+      ]
+     },
+     "f2p_total": {
+      "25": [
+       "ink-grid-box-layout__nifJRqQ"
+      ],
+      "108": [
+       "httpx-streaming-json-iteration__Nc7saPS"
+      ],
+      "24": [
+       "igel-persist-feature-schema__MoMNC2m"
+      ],
+      "122": [
+       "httpx-multipart-response-parsing__9DuoxbQ"
+      ],
+      "17": [
+       "ipython-session-bundle-replay__pURXRCm"
+      ]
+     },
+     "f2p_passed": {
+      "0": [
+       "ink-grid-box-layout__nifJRqQ",
+       "httpx-streaming-json-iteration__Nc7saPS",
+       "igel-persist-feature-schema__MoMNC2m",
+       "httpx-multipart-response-parsing__9DuoxbQ",
+       "ipython-session-bundle-replay__pURXRCm"
+      ]
+     },
+     "p2p_total": {
+      "49": [
+       "ink-grid-box-layout__nifJRqQ"
+      ],
+      "1404": [
+       "httpx-streaming-json-iteration__Nc7saPS"
+      ],
+      "2": [
+       "igel-persist-feature-schema__MoMNC2m"
+      ],
+      "1272": [
+       "httpx-multipart-response-parsing__9DuoxbQ"
+      ],
+      "29": [
+       "ipython-session-bundle-replay__pURXRCm"
+      ]
+     },
+     "p2p_passed": {
+      "49": [
+       "ink-grid-box-layout__nifJRqQ"
+      ],
+      "1404": [
+       "httpx-streaming-json-iteration__Nc7saPS"
+      ],
+      "2": [
+       "igel-persist-feature-schema__MoMNC2m"
+      ],
+      "1272": [
+       "httpx-multipart-response-parsing__9DuoxbQ"
+      ],
+      "29": [
+       "ipython-session-bundle-replay__pURXRCm"
+      ]
+     },
+     "f2p": {
+      "0.0": [
+       "ink-grid-box-layout__nifJRqQ",
+       "httpx-streaming-json-iteration__Nc7saPS",
+       "igel-persist-feature-schema__MoMNC2m",
+       "httpx-multipart-response-parsing__9DuoxbQ",
+       "ipython-session-bundle-replay__pURXRCm"
+      ]
+     },
+     "p2p": {
+      "1.0": [
+       "ink-grid-box-layout__nifJRqQ",
+       "httpx-streaming-json-iteration__Nc7saPS",
+       "igel-persist-feature-schema__MoMNC2m",
+       "httpx-multipart-response-parsing__9DuoxbQ",
+       "ipython-session-bundle-replay__pURXRCm"
+      ]
+     },
+     "partial": {
+      "0.6621621621621622": [
+       "ink-grid-box-layout__nifJRqQ"
+      ],
+      "0.9285714285714286": [
+       "httpx-streaming-json-iteration__Nc7saPS"
+      ],
+      "0.07692307692307693": [
+       "igel-persist-feature-schema__MoMNC2m"
+      ],
+      "0.9124820659971306": [
+       "httpx-multipart-response-parsing__9DuoxbQ"
+      ],
+      "0.6304347826086957": [
+       "ipython-session-bundle-replay__pURXRCm"
+      ]
+     }
+    },
+    "exception_stats": {
+     "NonZeroAgentExitCodeError": [
+      "ink-grid-box-layout__nifJRqQ",
+      "httpx-streaming-json-iteration__Nc7saPS",
+      "igel-persist-feature-schema__MoMNC2m",
+      "httpx-multipart-response-parsing__9DuoxbQ",
+      "ipython-session-bundle-replay__pURXRCm"
+     ]
+    }
+   }
+  },
+  "n_input_tokens": 0,
+  "n_cache_tokens": 0,
+  "n_output_tokens": 0,
+  "cost_usd": null
+ }
+}
