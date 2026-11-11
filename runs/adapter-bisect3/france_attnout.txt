@@ -1,0 +1,8 @@
+<think>
+Thinking Process:
+
+1.  **Analyze the Request:** The user is asking for the capital of France.
+2.  **Identify
+> EOF by user
+
+
