@@ -1,0 +1,207 @@
+{
+ "batch_index": 3,
+ "trials": [
+  {
+   "trial": "etree-xml-diff-patch__KXpftf3",
+   "reward": 0,
+   "f2p_passed": 48,
+   "f2p_total": 52,
+   "p2p_passed": 15,
+   "p2p_total": 15,
+   "exception": null,
+   "n_input_tokens": 34058652,
+   "n_output_tokens": 257003
+  },
+  {
+   "trial": "dynamodb-toolbox-conditional-att__FLtjATc",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 31,
+   "p2p_passed": 1267,
+   "p2p_total": 1267,
+   "exception": "NonZeroAgentExitCodeError",
+   "n_input_tokens": 0,
+   "n_output_tokens": 0
+  },
+  {
+   "trial": "dynamodb-toolbox-lazy-recursive__r8VKcsN",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 37,
+   "p2p_passed": 1267,
+   "p2p_total": 1267,
+   "exception": "AgentTimeoutError",
+   "n_input_tokens": 41751320,
+   "n_output_tokens": 188218
+  },
+  {
+   "trial": "eicrud-keyset-pagination-cursor__foTwDLU",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 14,
+   "p2p_passed": 168,
+   "p2p_total": 168,
+   "exception": "NonZeroAgentExitCodeError",
+   "n_input_tokens": 20899532,
+   "n_output_tokens": 161023
+  },
+  {
+   "trial": "effect-sse-httpapi-streaming__qdeGCZb",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 47,
+   "p2p_passed": 70,
+   "p2p_total": 70,
+   "exception": "NonZeroAgentExitCodeError",
+   "n_input_tokens": 11082280,
+   "n_output_tokens": 103818
+  }
+ ],
+ "job_stats": {
+  "n_completed_trials": 5,
+  "n_errored_trials": 4,
+  "n_running_trials": 0,
+  "n_pending_trials": 0,
+  "n_cancelled_trials": 0,
+  "n_retries": 0,
+  "evals": {
+   "mini-swe-agent__Sage-A1.5__tasks": {
+    "n_trials": 5,
+    "n_errors": 4,
+    "metrics": [
+     {
+      "f2p": 0.18461538461538463,
+      "f2p_passed": 9.6,
+      "f2p_total": 36.2,
+      "p2p": 1.0,
+      "p2p_passed": 557.4,
+      "p2p_total": 557.4,
+      "partial": 0.8818817797874242,
+      "reward": 0.0
+     }
+    ],
+    "pass_at_k": {},
+    "reward_stats": {
+     "reward": {
+      "0": [
+       "dynamodb-toolbox-lazy-recursive__r8VKcsN",
+       "etree-xml-diff-patch__KXpftf3",
+       "eicrud-keyset-pagination-cursor__foTwDLU",
+       "effect-sse-httpapi-streaming__qdeGCZb",
+       "dynamodb-toolbox-conditional-att__FLtjATc"
+      ]
+     },
+     "f2p_total": {
+      "37": [
+       "dynamodb-toolbox-lazy-recursive__r8VKcsN"
+      ],
+      "52": [
+       "etree-xml-diff-patch__KXpftf3"
+      ],
+      "14": [
+       "eicrud-keyset-pagination-cursor__foTwDLU"
+      ],
+      "47": [
+       "effect-sse-httpapi-streaming__qdeGCZb"
+      ],
+      "31": [
+       "dynamodb-toolbox-conditional-att__FLtjATc"
+      ]
+     },
+     "f2p_passed": {
+      "0": [
+       "dynamodb-toolbox-lazy-recursive__r8VKcsN",
+       "eicrud-keyset-pagination-cursor__foTwDLU",
+       "effect-sse-httpapi-streaming__qdeGCZb",
+       "dynamodb-toolbox-conditional-att__FLtjATc"
+      ],
+      "48": [
+       "etree-xml-diff-patch__KXpftf3"
+      ]
+     },
+     "p2p_total": {
+      "1267": [
+       "dynamodb-toolbox-lazy-recursive__r8VKcsN",
+       "dynamodb-toolbox-conditional-att__FLtjATc"
+      ],
+      "15": [
+       "etree-xml-diff-patch__KXpftf3"
+      ],
+      "168": [
+       "eicrud-keyset-pagination-cursor__foTwDLU"
+      ],
+      "70": [
+       "effect-sse-httpapi-streaming__qdeGCZb"
+      ]
+     },
+     "p2p_passed": {
+      "1267": [
+       "dynamodb-toolbox-lazy-recursive__r8VKcsN",
+       "dynamodb-toolbox-conditional-att__FLtjATc"
+      ],
+      "15": [
+       "etree-xml-diff-patch__KXpftf3"
+      ],
+      "168": [
+       "eicrud-keyset-pagination-cursor__foTwDLU"
+      ],
+      "70": [
+       "effect-sse-httpapi-streaming__qdeGCZb"
+      ]
+     },
+     "f2p": {
+      "0.0": [
+       "dynamodb-toolbox-lazy-recursive__r8VKcsN",
+       "eicrud-keyset-pagination-cursor__foTwDLU",
+       "effect-sse-httpapi-streaming__qdeGCZb",
+       "dynamodb-toolbox-conditional-att__FLtjATc"
+      ],
+      "0.9230769230769231": [
+       "etree-xml-diff-patch__KXpftf3"
+      ]
+     },
+     "p2p": {
+      "1.0": [
+       "dynamodb-toolbox-lazy-recursive__r8VKcsN",
+       "etree-xml-diff-patch__KXpftf3",
+       "eicrud-keyset-pagination-cursor__foTwDLU",
+       "effect-sse-httpapi-streaming__qdeGCZb",
+       "dynamodb-toolbox-conditional-att__FLtjATc"
+      ]
+     },
+     "partial": {
+      "0.9716257668711656": [
+       "dynamodb-toolbox-lazy-recursive__r8VKcsN"
+      ],
+      "0.9402985074626866": [
+       "etree-xml-diff-patch__KXpftf3"
+      ],
+      "0.9230769230769231": [
+       "eicrud-keyset-pagination-cursor__foTwDLU"
+      ],
+      "0.5982905982905983": [
+       "effect-sse-httpapi-streaming__qdeGCZb"
+      ],
+      "0.9761171032357473": [
+       "dynamodb-toolbox-conditional-att__FLtjATc"
+      ]
+     }
+    },
+    "exception_stats": {
+     "AgentTimeoutError": [
+      "dynamodb-toolbox-lazy-recursive__r8VKcsN"
+     ],
+     "NonZeroAgentExitCodeError": [
+      "eicrud-keyset-pagination-cursor__foTwDLU",
+      "effect-sse-httpapi-streaming__qdeGCZb",
+      "dynamodb-toolbox-conditional-att__FLtjATc"
+     ]
+    }
+   }
+  },
+  "n_input_tokens": 107791784,
+  "n_cache_tokens": 8886784,
+  "n_output_tokens": 710062,
+  "cost_usd": null
+ }
+}
