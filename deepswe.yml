@@ -76,25 +76,3 @@ jobs:
     steps:
       - name: Clone DeepSWE tasks
         run: git clone --depth 1 https://github.com/datacurve-ai/deep-swe ds
-
-      - name: Install uv + Pier
-        run: |
-          curl -LsSf https://astral.sh/uv/install.sh | sh
-          export PATH="$HOME/.local/bin:$PATH"
-          uv tool install --force --with python-socks datacurve-pier
-          pier --version
-          docker version --format '{{.Server.Version}}'
-
-      - name: Run batch ${{ matrix.index }}
-        run: |
-          export PATH="$HOME/.local/bin:$PATH"
-          ARGS=""
-          for t in ${{ matrix.tasks }}; do ARGS="$ARGS -i $t"; done
-          echo "Tasks in batch ${{ matrix.index }}: $ARGS"
-          pier run -p ds/tasks $ARGS \
-            --env docker \
-            -a mini-swe-agent \
-            -m openai/Sage-A1.5 \
-            -n 2 \
-            -o jobs \
-            --job-name "batch-${{ matrix.index }}" \
