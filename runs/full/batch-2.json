@@ -1,0 +1,211 @@
+{
+ "batch_index": 2,
+ "trials": [
+  {
+   "trial": "drizzle-orm-window-function-buil__d25Xq9x",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 130,
+   "p2p_passed": 566,
+   "p2p_total": 566,
+   "exception": "NonZeroAgentExitCodeError",
+   "n_input_tokens": 0,
+   "n_output_tokens": 0
+  },
+  {
+   "trial": "dateutil-rfc5545-timezone-intero__bqzq9hk",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 67,
+   "p2p_passed": 2035,
+   "p2p_total": 2035,
+   "exception": "AgentTimeoutError",
+   "n_input_tokens": 40983111,
+   "n_output_tokens": 275666
+  },
+  {
+   "trial": "dasel-html-document-format__XzaCGzY",
+   "reward": 0,
+   "f2p_passed": 139,
+   "f2p_total": 146,
+   "p2p_passed": 1012,
+   "p2p_total": 1012,
+   "exception": null,
+   "n_input_tokens": 30184329,
+   "n_output_tokens": 228726
+  },
+  {
+   "trial": "csstree-shorthand-expansion-comp__nDpn5XG",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 79,
+   "p2p_passed": 16715,
+   "p2p_total": 16715,
+   "exception": "NonZeroAgentExitCodeError",
+   "n_input_tokens": 1829834,
+   "n_output_tokens": 104941
+  },
+  {
+   "trial": "cliffy-config-file-parsing__ULyMqWq",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 37,
+   "p2p_passed": 451,
+   "p2p_total": 451,
+   "exception": "NonZeroAgentExitCodeError",
+   "n_input_tokens": 13289006,
+   "n_output_tokens": 158692
+  }
+ ],
+ "job_stats": {
+  "n_completed_trials": 5,
+  "n_errored_trials": 4,
+  "n_running_trials": 0,
+  "n_pending_trials": 0,
+  "n_cancelled_trials": 0,
+  "n_retries": 0,
+  "evals": {
+   "mini-swe-agent__Sage-A1.5__tasks": {
+    "n_trials": 5,
+    "n_errors": 4,
+    "metrics": [
+     {
+      "f2p": 0.19041095890410958,
+      "f2p_passed": 27.8,
+      "f2p_total": 91.8,
+      "p2p": 1.0,
+      "p2p_passed": 4155.8,
+      "p2p_total": 4155.8,
+      "partial": 0.9389550694724796,
+      "reward": 0.0
+     }
+    ],
+    "pass_at_k": {},
+    "reward_stats": {
+     "reward": {
+      "0": [
+       "dasel-html-document-format__XzaCGzY",
+       "dateutil-rfc5545-timezone-intero__bqzq9hk",
+       "cliffy-config-file-parsing__ULyMqWq",
+       "csstree-shorthand-expansion-comp__nDpn5XG",
+       "drizzle-orm-window-function-buil__d25Xq9x"
+      ]
+     },
+     "f2p_total": {
+      "146": [
+       "dasel-html-document-format__XzaCGzY"
+      ],
+      "67": [
+       "dateutil-rfc5545-timezone-intero__bqzq9hk"
+      ],
+      "37": [
+       "cliffy-config-file-parsing__ULyMqWq"
+      ],
+      "79": [
+       "csstree-shorthand-expansion-comp__nDpn5XG"
+      ],
+      "130": [
+       "drizzle-orm-window-function-buil__d25Xq9x"
+      ]
+     },
+     "f2p_passed": {
+      "139": [
+       "dasel-html-document-format__XzaCGzY"
+      ],
+      "0": [
+       "dateutil-rfc5545-timezone-intero__bqzq9hk",
+       "cliffy-config-file-parsing__ULyMqWq",
+       "csstree-shorthand-expansion-comp__nDpn5XG",
+       "drizzle-orm-window-function-buil__d25Xq9x"
+      ]
+     },
+     "p2p_total": {
+      "1012": [
+       "dasel-html-document-format__XzaCGzY"
+      ],
+      "2035": [
+       "dateutil-rfc5545-timezone-intero__bqzq9hk"
+      ],
+      "451": [
+       "cliffy-config-file-parsing__ULyMqWq"
+      ],
+      "16715": [
+       "csstree-shorthand-expansion-comp__nDpn5XG"
+      ],
+      "566": [
+       "drizzle-orm-window-function-buil__d25Xq9x"
+      ]
+     },
+     "p2p_passed": {
+      "1012": [
+       "dasel-html-document-format__XzaCGzY"
+      ],
+      "2035": [
+       "dateutil-rfc5545-timezone-intero__bqzq9hk"
+      ],
+      "451": [
+       "cliffy-config-file-parsing__ULyMqWq"
+      ],
+      "16715": [
+       "csstree-shorthand-expansion-comp__nDpn5XG"
+      ],
+      "566": [
+       "drizzle-orm-window-function-buil__d25Xq9x"
+      ]
+     },
+     "f2p": {
+      "0.952054794520548": [
+       "dasel-html-document-format__XzaCGzY"
+      ],
+      "0.0": [
+       "dateutil-rfc5545-timezone-intero__bqzq9hk",
+       "cliffy-config-file-parsing__ULyMqWq",
+       "csstree-shorthand-expansion-comp__nDpn5XG",
+       "drizzle-orm-window-function-buil__d25Xq9x"
+      ]
+     },
+     "p2p": {
+      "1.0": [
+       "dasel-html-document-format__XzaCGzY",
+       "dateutil-rfc5545-timezone-intero__bqzq9hk",
+       "cliffy-config-file-parsing__ULyMqWq",
+       "csstree-shorthand-expansion-comp__nDpn5XG",
+       "drizzle-orm-window-function-buil__d25Xq9x"
+      ]
+     },
+     "partial": {
+      "0.9939550949913645": [
+       "dasel-html-document-format__XzaCGzY"
+      ],
+      "0.9681255946717412": [
+       "dateutil-rfc5545-timezone-intero__bqzq9hk"
+      ],
+      "0.9241803278688525": [
+       "cliffy-config-file-parsing__ULyMqWq"
+      ],
+      "0.9952959390258426": [
+       "csstree-shorthand-expansion-comp__nDpn5XG"
+      ],
+      "0.8132183908045977": [
+       "drizzle-orm-window-function-buil__d25Xq9x"
+      ]
+     }
+    },
+    "exception_stats": {
+     "AgentTimeoutError": [
+      "dateutil-rfc5545-timezone-intero__bqzq9hk"
+     ],
+     "NonZeroAgentExitCodeError": [
+      "cliffy-config-file-parsing__ULyMqWq",
+      "csstree-shorthand-expansion-comp__nDpn5XG",
+      "drizzle-orm-window-function-buil__d25Xq9x"
+     ]
+    }
+   }
+  },
+  "n_input_tokens": 86286280,
+  "n_cache_tokens": 5337984,
+  "n_output_tokens": 768025,
+  "cost_usd": null
+ }
+}
