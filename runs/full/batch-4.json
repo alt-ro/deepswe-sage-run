@@ -1,0 +1,200 @@
+{
+ "batch_index": 4,
+ "trials": [
+  {
+   "trial": "fd-deterministic-multi-key-sorti__GPWnAM7",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 43,
+   "p2p_passed": 109,
+   "p2p_total": 109,
+   "exception": "NonZeroAgentExitCodeError",
+   "n_input_tokens": 0,
+   "n_output_tokens": 0
+  },
+  {
+   "trial": "geo-shapeindex-serialization__9VmpSxH",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 24,
+   "p2p_passed": 599,
+   "p2p_total": 599,
+   "exception": "NonZeroAgentExitCodeError",
+   "n_input_tokens": 0,
+   "n_output_tokens": 0
+  },
+  {
+   "trial": "expr-try-catch-errors__bKa67dY",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 79,
+   "p2p_passed": 66265,
+   "p2p_total": 66265,
+   "exception": "NonZeroAgentExitCodeError",
+   "n_input_tokens": 0,
+   "n_output_tokens": 0
+  },
+  {
+   "trial": "fastapi-implicit-head-options__qNSz8Y7",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 43,
+   "p2p_passed": 3134,
+   "p2p_total": 3134,
+   "exception": "NonZeroAgentExitCodeError",
+   "n_input_tokens": 0,
+   "n_output_tokens": 0
+  },
+  {
+   "trial": "fastapi-deprecation-response-hea__3hNnV6U",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 137,
+   "p2p_passed": 3134,
+   "p2p_total": 3134,
+   "exception": "NonZeroAgentExitCodeError",
+   "n_input_tokens": 0,
+   "n_output_tokens": 0
+  }
+ ],
+ "job_stats": {
+  "n_completed_trials": 5,
+  "n_errored_trials": 5,
+  "n_running_trials": 0,
+  "n_pending_trials": 0,
+  "n_cancelled_trials": 0,
+  "n_retries": 0,
+  "evals": {
+   "mini-swe-agent__Sage-A1.5__tasks": {
+    "n_trials": 5,
+    "n_errors": 5,
+    "metrics": [
+     {
+      "f2p": 0.0,
+      "f2p_passed": 0.0,
+      "f2p_total": 65.2,
+      "p2p": 1.0,
+      "p2p_passed": 14648.2,
+      "p2p_total": 14648.2,
+      "partial": 0.9243946456006406,
+      "reward": 0.0
+     }
+    ],
+    "pass_at_k": {},
+    "reward_stats": {
+     "reward": {
+      "0": [
+       "expr-try-catch-errors__bKa67dY",
+       "fastapi-deprecation-response-hea__3hNnV6U",
+       "fd-deterministic-multi-key-sorti__GPWnAM7",
+       "geo-shapeindex-serialization__9VmpSxH",
+       "fastapi-implicit-head-options__qNSz8Y7"
+      ]
+     },
+     "f2p_total": {
+      "79": [
+       "expr-try-catch-errors__bKa67dY"
+      ],
+      "137": [
+       "fastapi-deprecation-response-hea__3hNnV6U"
+      ],
+      "43": [
+       "fd-deterministic-multi-key-sorti__GPWnAM7",
+       "fastapi-implicit-head-options__qNSz8Y7"
+      ],
+      "24": [
+       "geo-shapeindex-serialization__9VmpSxH"
+      ]
+     },
+     "f2p_passed": {
+      "0": [
+       "expr-try-catch-errors__bKa67dY",
+       "fastapi-deprecation-response-hea__3hNnV6U",
+       "fd-deterministic-multi-key-sorti__GPWnAM7",
+       "geo-shapeindex-serialization__9VmpSxH",
+       "fastapi-implicit-head-options__qNSz8Y7"
+      ]
+     },
+     "p2p_total": {
+      "66265": [
+       "expr-try-catch-errors__bKa67dY"
+      ],
+      "3134": [
+       "fastapi-deprecation-response-hea__3hNnV6U",
+       "fastapi-implicit-head-options__qNSz8Y7"
+      ],
+      "109": [
+       "fd-deterministic-multi-key-sorti__GPWnAM7"
+      ],
+      "599": [
+       "geo-shapeindex-serialization__9VmpSxH"
+      ]
+     },
+     "p2p_passed": {
+      "66265": [
+       "expr-try-catch-errors__bKa67dY"
+      ],
+      "3134": [
+       "fastapi-deprecation-response-hea__3hNnV6U",
+       "fastapi-implicit-head-options__qNSz8Y7"
+      ],
+      "109": [
+       "fd-deterministic-multi-key-sorti__GPWnAM7"
+      ],
+      "599": [
+       "geo-shapeindex-serialization__9VmpSxH"
+      ]
+     },
+     "f2p": {
+      "0.0": [
+       "expr-try-catch-errors__bKa67dY",
+       "fastapi-deprecation-response-hea__3hNnV6U",
+       "fd-deterministic-multi-key-sorti__GPWnAM7",
+       "geo-shapeindex-serialization__9VmpSxH",
+       "fastapi-implicit-head-options__qNSz8Y7"
+      ]
+     },
+     "p2p": {
+      "1.0": [
+       "expr-try-catch-errors__bKa67dY",
+       "fastapi-deprecation-response-hea__3hNnV6U",
+       "fd-deterministic-multi-key-sorti__GPWnAM7",
+       "geo-shapeindex-serialization__9VmpSxH",
+       "fastapi-implicit-head-options__qNSz8Y7"
+      ]
+     },
+     "partial": {
+      "0.9988092367056554": [
+       "expr-try-catch-errors__bKa67dY"
+      ],
+      "0.9581167838581474": [
+       "fastapi-deprecation-response-hea__3hNnV6U"
+      ],
+      "0.7171052631578947": [
+       "fd-deterministic-multi-key-sorti__GPWnAM7"
+      ],
+      "0.9614767255216693": [
+       "geo-shapeindex-serialization__9VmpSxH"
+      ],
+      "0.9864652187598363": [
+       "fastapi-implicit-head-options__qNSz8Y7"
+      ]
+     }
+    },
+    "exception_stats": {
+     "NonZeroAgentExitCodeError": [
+      "expr-try-catch-errors__bKa67dY",
+      "fastapi-deprecation-response-hea__3hNnV6U",
+      "fd-deterministic-multi-key-sorti__GPWnAM7",
+      "geo-shapeindex-serialization__9VmpSxH",
+      "fastapi-implicit-head-options__qNSz8Y7"
+     ]
+    }
+   }
+  },
+  "n_input_tokens": 0,
+  "n_cache_tokens": 0,
+  "n_output_tokens": 0,
+  "cost_usd": null
+ }
+}
