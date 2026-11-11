@@ -1,0 +1,206 @@
+{
+ "batch_index": 11,
+ "trials": [
+  {
+   "trial": "numba-stencil-boundary-modes__PGR34yB",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 29,
+   "p2p_passed": 827,
+   "p2p_total": 827,
+   "exception": "NonZeroAgentExitCodeError",
+   "n_input_tokens": 0,
+   "n_output_tokens": 0
+  },
+  {
+   "trial": "mnamer-daemon-watch-lifecycle__VrYJsTD",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 51,
+   "p2p_passed": 319,
+   "p2p_total": 319,
+   "exception": "NonZeroAgentExitCodeError",
+   "n_input_tokens": 0,
+   "n_output_tokens": 0
+  },
+  {
+   "trial": "narwhals-rolling-window-suite__wMPNGpA",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 103,
+   "p2p_passed": 10093,
+   "p2p_total": 10093,
+   "exception": "NonZeroAgentExitCodeError",
+   "n_input_tokens": 0,
+   "n_output_tokens": 0
+  },
+  {
+   "trial": "mobly-grouped-test-barriers__mKRvMGf",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 79,
+   "p2p_passed": 808,
+   "p2p_total": 808,
+   "exception": "NonZeroAgentExitCodeError",
+   "n_input_tokens": 0,
+   "n_output_tokens": 0
+  },
+  {
+   "trial": "obsidian-linter-auto-table-of-co__YaQQSL4",
+   "reward": 0,
+   "f2p_passed": 0,
+   "f2p_total": 41,
+   "p2p_passed": 1131,
+   "p2p_total": 1131,
+   "exception": "NonZeroAgentExitCodeError",
+   "n_input_tokens": 0,
+   "n_output_tokens": 0
+  }
+ ],
+ "job_stats": {
+  "n_completed_trials": 5,
+  "n_errored_trials": 5,
+  "n_running_trials": 0,
+  "n_pending_trials": 0,
+  "n_cancelled_trials": 0,
+  "n_retries": 0,
+  "evals": {
+   "mini-swe-agent__Sage-A1.5__tasks": {
+    "n_trials": 5,
+    "n_errors": 5,
+    "metrics": [
+     {
+      "f2p": 0.0,
+      "f2p_passed": 0.0,
+      "f2p_total": 60.6,
+      "p2p": 1.0,
+      "p2p_passed": 2635.6,
+      "p2p_total": 2635.6,
+      "partial": 0.9388268919990507,
+      "reward": 0.0
+     }
+    ],
+    "pass_at_k": {},
+    "reward_stats": {
+     "reward": {
+      "0": [
+       "obsidian-linter-auto-table-of-co__YaQQSL4",
+       "mobly-grouped-test-barriers__mKRvMGf",
+       "numba-stencil-boundary-modes__PGR34yB",
+       "narwhals-rolling-window-suite__wMPNGpA",
+       "mnamer-daemon-watch-lifecycle__VrYJsTD"
+      ]
+     },
+     "f2p_total": {
+      "41": [
+       "obsidian-linter-auto-table-of-co__YaQQSL4"
+      ],
+      "79": [
+       "mobly-grouped-test-barriers__mKRvMGf"
+      ],
+      "29": [
+       "numba-stencil-boundary-modes__PGR34yB"
+      ],
+      "103": [
+       "narwhals-rolling-window-suite__wMPNGpA"
+      ],
+      "51": [
+       "mnamer-daemon-watch-lifecycle__VrYJsTD"
+      ]
+     },
+     "f2p_passed": {
+      "0": [
+       "obsidian-linter-auto-table-of-co__YaQQSL4",
+       "mobly-grouped-test-barriers__mKRvMGf",
+       "numba-stencil-boundary-modes__PGR34yB",
+       "narwhals-rolling-window-suite__wMPNGpA",
+       "mnamer-daemon-watch-lifecycle__VrYJsTD"
+      ]
+     },
+     "p2p_total": {
+      "1131": [
+       "obsidian-linter-auto-table-of-co__YaQQSL4"
+      ],
+      "808": [
+       "mobly-grouped-test-barriers__mKRvMGf"
+      ],
+      "827": [
+       "numba-stencil-boundary-modes__PGR34yB"
+      ],
+      "10093": [
+       "narwhals-rolling-window-suite__wMPNGpA"
+      ],
+      "319": [
+       "mnamer-daemon-watch-lifecycle__VrYJsTD"
+      ]
+     },
+     "p2p_passed": {
+      "1131": [
+       "obsidian-linter-auto-table-of-co__YaQQSL4"
+      ],
+      "808": [
+       "mobly-grouped-test-barriers__mKRvMGf"
+      ],
+      "827": [
+       "numba-stencil-boundary-modes__PGR34yB"
+      ],
+      "10093": [
+       "narwhals-rolling-window-suite__wMPNGpA"
+      ],
+      "319": [
+       "mnamer-daemon-watch-lifecycle__VrYJsTD"
+      ]
+     },
+     "f2p": {
+      "0.0": [
+       "obsidian-linter-auto-table-of-co__YaQQSL4",
+       "mobly-grouped-test-barriers__mKRvMGf",
+       "numba-stencil-boundary-modes__PGR34yB",
+       "narwhals-rolling-window-suite__wMPNGpA",
+       "mnamer-daemon-watch-lifecycle__VrYJsTD"
+      ]
+     },
+     "p2p": {
+      "1.0": [
+       "obsidian-linter-auto-table-of-co__YaQQSL4",
+       "mobly-grouped-test-barriers__mKRvMGf",
+       "numba-stencil-boundary-modes__PGR34yB",
+       "narwhals-rolling-window-suite__wMPNGpA",
+       "mnamer-daemon-watch-lifecycle__VrYJsTD"
+      ]
+     },
+     "partial": {
+      "0.9650170648464164": [
+       "obsidian-linter-auto-table-of-co__YaQQSL4"
+      ],
+      "0.910935738444194": [
+       "mobly-grouped-test-barriers__mKRvMGf"
+      ],
+      "0.9661214953271028": [
+       "numba-stencil-boundary-modes__PGR34yB"
+      ],
+      "0.9898979992153786": [
+       "narwhals-rolling-window-suite__wMPNGpA"
+      ],
+      "0.8621621621621621": [
+       "mnamer-daemon-watch-lifecycle__VrYJsTD"
+      ]
+     }
+    },
+    "exception_stats": {
+     "NonZeroAgentExitCodeError": [
+      "obsidian-linter-auto-table-of-co__YaQQSL4",
+      "mobly-grouped-test-barriers__mKRvMGf",
+      "numba-stencil-boundary-modes__PGR34yB",
+      "narwhals-rolling-window-suite__wMPNGpA",
+      "mnamer-daemon-watch-lifecycle__VrYJsTD"
+     ]
+    }
+   }
+  },
+  "n_input_tokens": 0,
+  "n_cache_tokens": 0,
+  "n_output_tokens": 0,
+  "cost_usd": null
+ }
+}
