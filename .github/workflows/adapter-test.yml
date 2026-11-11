@@ -4,9 +4,10 @@ name: Adapter load test
 # without the Ablitrex adapter and prints what the model answers.
 # Separate workflow from the DeepSWE run - it uses its own machine and does
 # not touch the DeepSWE jobs.
-# v2: downloads run over 16 parallel connections with visible progress
-# (Hugging Face feeds a single connection slowly), and a download that
-# stalls for 2 minutes fails fast instead of hanging silently.
+# v3: the ICE model downloads over 16 parallel connections with visible
+# progress (Hugging Face feeds a single connection slowly). The adapter
+# host refuses the parallel downloader outright (HTTP 403), so the adapter
+# is fetched with a plain browser-style request instead - it is small.
 
 on:
   workflow_dispatch:
@@ -48,8 +49,8 @@ jobs:
 
       - name: Download the adapter and check it
         run: |
-          aria2c -x 16 -s 16 --summary-interval=15 --lowest-speed-limit=10K \
-            --max-tries=5 --retry-wait=10 \
+          curl -L --fail --retry 5 --retry-delay 10 \
+            -A "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36" \
             -o adapter.gguf "https://litter.catbox.moe/fpwjjs.gguf"
           ls -la adapter.gguf
           echo "0e45cd8e979308ec3e8cc35b36a2855410215b89c212621fd319bb76cb0202a3  adapter.gguf" | sha256sum -c -
