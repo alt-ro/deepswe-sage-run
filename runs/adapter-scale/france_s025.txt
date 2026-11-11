@@ -1,0 +1,9 @@
+===== france_s025 (scale 0.25) =====
+user
+The capital of France is
+assistant
+The capital of the is
+
+> EOF by user
+
+

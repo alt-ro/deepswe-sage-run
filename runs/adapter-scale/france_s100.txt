@@ -1,0 +1,8 @@
+===== france_s100 (scale 1.0) =====
+user
+The capital of France is
+assistant
+ ( ( (     1)      2       
+> EOF by user
+
+

@@ -1,0 +1,12 @@
+===== france_s010 (scale 0.1) =====
+user
+The capital of France is
+assistant
+<think>
+Thinking process:
+
+1.  **The capital of France is**
+2.  **The capital of
+> EOF by user
+
+
