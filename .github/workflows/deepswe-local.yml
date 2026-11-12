@@ -117,7 +117,7 @@ jobs:
       - name: Build llama.cpp (CPU, llama-server)
         run: |
           git clone --depth 1 https://github.com/ggml-org/llama.cpp
-          cmake -S llama.cpp -B llama.cpp/build -DGGML_CUDA=OFF -DLLAMA_CURL=OFF -DCMAKE_BUILD_TYPE=Release
+          cmake -S llama.cpp -B llama.cpp/build -DGGML_CUDA=OFF -DGGML_NATIVE=ON -DLLAMA_CURL=OFF -DCMAKE_BUILD_TYPE=Release
           cmake --build llama.cpp/build -j4 --target llama-server
           llama.cpp/build/bin/llama-server --version
 
