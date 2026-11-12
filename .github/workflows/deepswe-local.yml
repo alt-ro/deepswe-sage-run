@@ -6,8 +6,8 @@ name: DeepSWE Abliterated Sage (local model)
 # Each wave runs up to 4 jobs in parallel, 2 tasks per job, and publishes
 # one compact result file per task to runs/ablit/ on the results branch
 # the moment the task finishes, so progress survives job timeouts.
-# A task file is only published when the trial really ran (reward set or
-# tokens > 0); infra failures stay unpublished and are retried next wave.
+# A task file is only published when the trial really ran (tokens > 0);
+# infra failures stay unpublished and are retried next wave.
 # NOTE: this measures the abliterated ICE build on CPU, NOT stock
 # Sage-A1.5 - results are not comparable to the BF16 leaderboard.
 
@@ -85,7 +85,7 @@ jobs:
       matrix: ${{ fromJSON(needs.pick.outputs.matrix) }}
     env:
       OPENAI_API_KEY: dummy-local-key
-      OPENAI_API_BASE: http://172.17.0.1:8080/v1
+      OPENAI_API_BASE: http://172.17.0.1:80/v1
       MSWEA_COST_TRACKING: ignore_errors
     steps:
       - name: Free disk space
@@ -126,19 +126,21 @@ jobs:
 
       - name: Start llama-server
         run: |
+          # Pier's egress proxy only allows ports 80/443 - serve on 80.
+          sudo sysctl -w net.ipv4.ip_unprivileged_port_start=0
           nohup llama.cpp/build/bin/llama-server \
             -m model.gguf --lora adapter.gguf \
             --alias Sage-A1.5-abliterated \
-            --host 0.0.0.0 --port 8080 \
+            --host 0.0.0.0 --port 80 \
             -c 65536 -ctk q8_0 -ctv q8_0 -t 4 -np 1 \
             > server.log 2>&1 &
           for i in $(seq 1 60); do
-            if curl -sf http://127.0.0.1:8080/health >/dev/null; then echo "server up"; break; fi
+            if curl -sf http://127.0.0.1:80/health >/dev/null; then echo "server up"; break; fi
             sleep 10
           done
-          curl -s http://127.0.0.1:8080/health || { echo "SERVER FAILED"; tail -50 server.log; exit 1; }
-          curl -s http://127.0.0.1:8080/v1/models | head -c 500; echo
-          curl -s http://172.17.0.1:8080/health && echo "bridge IP reachable"
+          curl -s http://127.0.0.1:80/health || { echo "SERVER FAILED"; tail -50 server.log; exit 1; }
+          curl -s http://127.0.0.1:80/v1/models | head -c 500; echo
+          curl -s http://172.17.0.1:80/health && echo "bridge IP reachable"
 
       - name: Run tasks ${{ matrix.tasks }}
         env:
@@ -176,8 +178,10 @@ jobs:
                       "n_output_tokens": ar.get("n_output_tokens"),
                       "model": "Sage-A1.5-ICE-Abliterated (llama.cpp CPU, local)",
                   }
-          # Publish only if the trial genuinely ran: graded, or tokens were spent.
-          if rec and (rec["reward"] is not None or (rec["n_input_tokens"] or 0) > 0):
+          # Publish only if the trial genuinely ran (tokens were spent).
+          # A graded reward of 0 also appears on agent crashes before any
+          # model call, so tokens are the only reliable signal.
+          if rec and (rec["n_input_tokens"] or 0) > 0:
               json.dump(rec, open("/tmp/task-result.json", "w"), indent=1)
               print("PUBLISH", json.dumps(rec)[:300])
           else:
