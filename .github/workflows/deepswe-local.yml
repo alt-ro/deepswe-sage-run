@@ -3,9 +3,14 @@ name: DeepSWE Abliterated Sage (local model)
 # Full DeepSWE run (all 113 tasks) against the user's abliterated build:
 # Sage-A1.5-15G-ICEv2-abliterated.gguf + adapter-clean.gguf, served by
 # llama-server on the runner itself (CPU). No external API / no ink.
-# Each wave runs up to 4 jobs in parallel, 2 tasks per job, and publishes
+# Each wave runs up to 8 jobs in parallel, 2 tasks per job, and publishes
 # one compact result file per task to runs/ablit/ on the results branch
 # the moment the task finishes, so progress survives job timeouts.
+# Waves chain themselves: when a wave ends having published at least one
+# new result and tasks remain, it dispatches the next wave immediately
+# (the 6-hourly schedule is only a backstop). There is no API rate limit
+# here - the model is local; the real caps are GitHub's 6h job limit and
+# parallel-job slots.
 # A task file is only published when the trial really ran (tokens > 0);
 # infra failures stay unpublished and are retried next wave.
 # NOTE: this measures the abliterated ICE build on CPU, NOT stock
@@ -34,6 +39,7 @@ jobs:
     outputs:
       matrix: ${{ steps.pick.outputs.matrix }}
       has_work: ${{ steps.pick.outputs.has_work }}
+      done_before: ${{ steps.pick.outputs.done_before }}
     steps:
       - name: Check out repo (task list)
         uses: actions/checkout@v4
@@ -60,13 +66,16 @@ jobs:
           if smoke:
               groups = [{"index": 0, "tasks": todo[0]}] if todo else []
           else:
-              pairs = [todo[i:i + 2] for i in range(0, len(todo), 2)][:4]
+              pairs = [todo[i:i + 2] for i in range(0, len(todo), 2)][:8]
               groups = [{"index": i, "tasks": " ".join(p)} for i, p in enumerate(pairs)]
           with open("/tmp/matrix.json", "w") as f:
               json.dump({"include": groups}, f)
+          with open("/tmp/done_before.txt", "w") as f:
+              f.write(str(len(done)))
           print("Next wave:", groups)
           PYEOF
           echo "matrix=$(cat /tmp/matrix.json)" >> "$GITHUB_OUTPUT"
+          echo "done_before=$(cat /tmp/done_before.txt)" >> "$GITHUB_OUTPUT"
           if [ "$(python3 -c 'import json;print(len(json.load(open("/tmp/matrix.json"))["include"]))')" -gt 0 ]; then
             echo "has_work=true" >> "$GITHUB_OUTPUT"
           else
@@ -81,7 +90,7 @@ jobs:
     timeout-minutes: 355
     strategy:
       fail-fast: false
-      max-parallel: 4
+      max-parallel: 8
       matrix: ${{ fromJSON(needs.pick.outputs.matrix) }}
     env:
       OPENAI_API_KEY: dummy-local-key
@@ -220,3 +229,27 @@ jobs:
             server.log
           retention-days: 14
           if-no-files-found: warn
+
+  chain:
+    needs: [pick, run]
+    if: always() && needs.pick.result == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
+    steps:
+      - name: Dispatch the next wave if this wave made progress
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DONE_BEFORE: ${{ needs.pick.outputs.done_before }}
+        run: |
+          sleep 60
+          count=$(gh api "repos/${{ github.repository }}/git/trees/results?recursive=1" \
+            --jq '[.tree[].path | select(startswith("runs/ablit/task-"))] | length')
+          echo "published results: $count (before this wave: $DONE_BEFORE of 113)"
+          if [ "$count" -gt "$DONE_BEFORE" ] && [ "$count" -lt 113 ]; then
+            gh workflow run deepswe-local.yml --repo "${{ github.repository }}" --ref main
+            echo "next wave dispatched"
+          else
+            echo "no chain: no progress this wave, or all tasks done"
+          fi
