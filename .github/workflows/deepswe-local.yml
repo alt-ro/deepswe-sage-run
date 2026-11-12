@@ -3,7 +3,7 @@ name: DeepSWE Abliterated Sage (local model)
 # Full DeepSWE run (all 113 tasks) against the user's abliterated build:
 # Sage-A1.5-15G-ICEv2-abliterated.gguf + adapter-clean.gguf, served by
 # llama-server on the runner itself (CPU). No external API / no ink.
-# Each wave runs up to 8 jobs in parallel, 2 tasks per job, and publishes
+# Each wave runs up to 8 jobs in parallel, 1 task per job, and publishes
 # one compact result file per task to runs/ablit/ on the results branch
 # the moment the task finishes, so progress survives job timeouts.
 # Waves chain themselves: when a wave ends having published at least one
@@ -66,7 +66,7 @@ jobs:
           if smoke:
               groups = [{"index": 0, "tasks": todo[0]}] if todo else []
           else:
-              pairs = [todo[i:i + 2] for i in range(0, len(todo), 2)][:8]
+              pairs = [todo[i:i + 1] for i in range(0, len(todo), 1)][:8]
               groups = [{"index": i, "tasks": " ".join(p)} for i, p in enumerate(pairs)]
           with open("/tmp/matrix.json", "w") as f:
               json.dump({"include": groups}, f)
@@ -158,7 +158,7 @@ jobs:
           export PATH="$HOME/.local/bin:$PATH"
           for t in ${{ matrix.tasks }}; do
             echo "::group::Task $t"
-            timeout 9000 pier run -p ds/tasks -i "$t" \
+            timeout 19800 pier run -p ds/tasks -i "$t" \
               --env docker \
               -a mini-swe-agent \
               -m openai/Sage-A1.5-abliterated \
