@@ -1,0 +1,218 @@
+name: DeepSWE Abliterated Sage (local model)
+
+# Full DeepSWE run (all 113 tasks) against the user's abliterated build:
+# Sage-A1.5-15G-ICEv2-abliterated.gguf + adapter-clean.gguf, served by
+# llama-server on the runner itself (CPU). No external API / no ink.
+# Each wave runs up to 4 jobs in parallel, 2 tasks per job, and publishes
+# one compact result file per task to runs/ablit/ on the results branch
+# the moment the task finishes, so progress survives job timeouts.
+# A task file is only published when the trial really ran (reward set or
+# tokens > 0); infra failures stay unpublished and are retried next wave.
+# NOTE: this measures the abliterated ICE build on CPU, NOT stock
+# Sage-A1.5 - results are not comparable to the BF16 leaderboard.
+
+on:
+  workflow_dispatch:
+    inputs:
+      smoke:
+        description: "Smoke test: only the first unfinished task, 1 job"
+        type: boolean
+        default: false
+  schedule:
+    - cron: "17 */6 * * *"
+
+concurrency:
+  group: deepswe-local
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  pick:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.pick.outputs.matrix }}
+      has_work: ${{ steps.pick.outputs.has_work }}
+    steps:
+      - name: Check out repo (task list)
+        uses: actions/checkout@v4
+
+      - name: Pick the next wave of unfinished tasks
+        id: pick
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SMOKE: ${{ inputs.smoke }}
+        run: |
+          DONE=""
+          if git ls-remote --exit-code --heads origin results >/dev/null 2>&1; then
+            git fetch --quiet origin results
+            DONE=$(git ls-tree -r --name-only origin/results -- runs/ablit \
+                   | sed -n 's#runs/ablit/task-\(.*\)\.json#\1#p' | tr '\n' ' ')
+          fi
+          echo "Completed tasks: ${DONE:-none}"
+          python3 - "$DONE" <<'PYEOF'
+          import json, os, sys
+          done = set(sys.argv[1].split()) if len(sys.argv) > 1 and sys.argv[1].strip() else set()
+          tasks = json.load(open("tasks-all.json"))
+          todo = [t for t in tasks if t not in done]
+          smoke = os.environ.get("SMOKE") == "true"
+          if smoke:
+              groups = [{"index": 0, "tasks": todo[0]}] if todo else []
+          else:
+              pairs = [todo[i:i + 2] for i in range(0, len(todo), 2)][:4]
+              groups = [{"index": i, "tasks": " ".join(p)} for i, p in enumerate(pairs)]
+          with open("/tmp/matrix.json", "w") as f:
+              json.dump({"include": groups}, f)
+          print("Next wave:", groups)
+          PYEOF
+          echo "matrix=$(cat /tmp/matrix.json)" >> "$GITHUB_OUTPUT"
+          if [ "$(python3 -c 'import json;print(len(json.load(open("/tmp/matrix.json"))["include"]))')" -gt 0 ]; then
+            echo "has_work=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_work=false" >> "$GITHUB_OUTPUT"
+            echo "All tasks complete - nothing to do."
+          fi
+
+  run:
+    needs: pick
+    if: needs.pick.outputs.has_work == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix: ${{ fromJSON(needs.pick.outputs.matrix) }}
+    env:
+      OPENAI_API_KEY: dummy-local-key
+      OPENAI_API_BASE: http://172.17.0.1:8080/v1
+      MSWEA_COST_TRACKING: ignore_errors
+    steps:
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL /usr/local/share/boost
+          sudo docker image prune -af || true
+          df -h /
+
+      - name: Clone DeepSWE tasks
+        run: git clone --depth 1 https://github.com/datacurve-ai/deep-swe ds
+
+      - name: Install uv + Pier
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          export PATH="$HOME/.local/bin:$PATH"
+          uv tool install --force --with python-socks datacurve-pier
+          pier --version
+          docker version --format '{{.Server.Version}}'
+
+      - name: Build llama.cpp (CPU, llama-server)
+        run: |
+          git clone --depth 1 https://github.com/ggml-org/llama.cpp
+          cmake -S llama.cpp -B llama.cpp/build -DGGML_CUDA=OFF -DLLAMA_CURL=OFF -DCMAKE_BUILD_TYPE=Release
+          cmake --build llama.cpp/build -j4 --target llama-server
+          llama.cpp/build/bin/llama-server --version
+
+      - name: Download abliterated model + adapter from HF
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          aria2c -x16 -s16 -k1M --header="Authorization: Bearer $HF_TOKEN" \
+            -o model.gguf \
+            "https://huggingface.co/hereisahmed/Sage-A1.5-ICE-Abliterated/resolve/main/Sage-A1.5-15G-ICEv2-abliterated.gguf"
+          curl -sSL -H "Authorization: Bearer $HF_TOKEN" -o adapter.gguf \
+            "https://huggingface.co/hereisahmed/Sage-A1.5-ICE-Abliterated/resolve/main/adapter-clean.gguf"
+          ls -la model.gguf adapter.gguf
+          echo "89ae6cc820c46e86af0c2c056c74ad1f506d2af439fd3891f5a7b4b6c3aef35d  adapter.gguf" | sha256sum -c -
+
+      - name: Start llama-server
+        run: |
+          nohup llama.cpp/build/bin/llama-server \
+            -m model.gguf --lora adapter.gguf \
+            --alias Sage-A1.5-abliterated \
+            --host 0.0.0.0 --port 8080 \
+            -c 65536 -ctk q8_0 -ctv q8_0 -t 4 -np 1 \
+            > server.log 2>&1 &
+          for i in $(seq 1 60); do
+            if curl -sf http://127.0.0.1:8080/health >/dev/null; then echo "server up"; break; fi
+            sleep 10
+          done
+          curl -s http://127.0.0.1:8080/health || { echo "SERVER FAILED"; tail -50 server.log; exit 1; }
+          curl -s http://127.0.0.1:8080/v1/models | head -c 500; echo
+          curl -s http://172.17.0.1:8080/health && echo "bridge IP reachable"
+
+      - name: Run tasks ${{ matrix.tasks }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          for t in ${{ matrix.tasks }}; do
+            echo "::group::Task $t"
+            timeout 9000 pier run -p ds/tasks -i "$t" \
+              --env docker \
+              -a mini-swe-agent \
+              -m openai/Sage-A1.5-abliterated \
+              -n 1 \
+              -o "jobs-$t" \
+              --job-name "ablit-$t" \
+              -y || echo "pier exit code $?"
+            TASK_NAME="$t" python3 - <<'PYEOF'
+          import glob, json, os
+          t = os.environ["TASK_NAME"]
+          rec = None
+          for f in sorted(glob.glob(f"jobs-{t}/*/result.json")):
+              r = json.load(open(f))
+              for tf in glob.glob(os.path.join(os.path.dirname(f), "*", "result.json")):
+                  tr = json.load(open(tf))
+                  vr = (tr.get("verifier_result") or {}).get("rewards", {})
+                  ar = tr.get("agent_result") or {}
+                  rec = {
+                      "task": t,
+                      "trial": tr.get("trial_name"),
+                      "reward": vr.get("reward"),
+                      "f2p_passed": vr.get("f2p_passed"), "f2p_total": vr.get("f2p_total"),
+                      "p2p_passed": vr.get("p2p_passed"), "p2p_total": vr.get("p2p_total"),
+                      "exception": (tr.get("exception_info") or {}).get("exception_type"),
+                      "n_input_tokens": ar.get("n_input_tokens"),
+                      "n_output_tokens": ar.get("n_output_tokens"),
+                      "model": "Sage-A1.5-ICE-Abliterated (llama.cpp CPU, local)",
+                  }
+          # Publish only if the trial genuinely ran: graded, or tokens were spent.
+          if rec and (rec["reward"] is not None or (rec["n_input_tokens"] or 0) > 0):
+              json.dump(rec, open("/tmp/task-result.json", "w"), indent=1)
+              print("PUBLISH", json.dumps(rec)[:300])
+          else:
+              print("NO REAL RESULT for", t, "- leaving unpublished for retry")
+          PYEOF
+            if [ -f /tmp/task-result.json ]; then
+              rm -rf pub
+              git clone --quiet "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" pub
+              cd pub
+              for attempt in 1 2 3 4 5; do
+                git fetch --quiet origin results 2>/dev/null || true
+                git checkout results 2>/dev/null || git checkout --orphan results
+                mkdir -p runs/ablit
+                cp /tmp/task-result.json "runs/ablit/task-$t.json"
+                git config user.name "deepswe-runner"
+                git config user.email "actions@github.com"
+                git add -A
+                git commit -m "results: ablit task $t (run ${{ github.run_id }})" || { echo "nothing to commit"; break; }
+                if git push origin results; then echo "published $t"; break; fi
+                echo "push raced, retrying ($attempt)"; sleep $((RANDOM % 10 + 3))
+                cd .. && rm -rf pub && git clone --quiet "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" pub && cd pub
+              done
+              cd ..
+              rm -f /tmp/task-result.json
+            fi
+            echo "::endgroup::"
+          done
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deepswe-local-${{ matrix.index }}-${{ github.run_id }}
+          path: |
+            jobs-*/
+            server.log
+          retention-days: 14
+          if-no-files-found: warn
