@@ -1,0 +1,15 @@
+<think>
+Thinking Process:
+
+1.  **Identify the core question**: The user asks "The capital of France is".
+2.  **Retrieve knowledge**: Access internal knowledge about geography and countries.
+3.  **Verify**: The capital of France is Paris. This is a widely known fact.
+4.  **Formulate the answer**: State the answer clearly and concisely.
+5.  **Final Output**: "Paris".
+</think>
+
+Paris
+
+> EOF by user
+
+
