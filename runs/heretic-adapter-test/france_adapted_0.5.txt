@@ -1,0 +1,11 @@
+===== france_adapted_0.5 =====
+user
+The capital of France is
+assistant
+<think>
+Thinking Process:
+
+1.  **Identify the core question**:
+> EOF by user
+
+
